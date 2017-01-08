@@ -1,0 +1,5 @@
+Cabeçalho apresenta 10 atributos/colunas, mas cada registro possui apenas 8. Atributos sobressalentes no cabeçalho identificados como "capital" (terceira posição) e "alternative_names"    (sétima posição).
+Todos os registros apresentavam vírgulas duplas.
+Linhas 18,68,113,140,171,304,444,636,883,950,1164,1338,1597,1697,1755,2163,2310,3175,3243,3830,4006,4399,4929,5120,5216,5414,5666 apresentam um atributo "true".
+Linha 1077 com um atributo a mais, possivelmente o atributo deletado "alternative_names", na sétima posição do registro.
+Linha 1455 com um atributo a mais, sétima posição do registro. 
