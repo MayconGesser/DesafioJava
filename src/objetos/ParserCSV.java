@@ -55,7 +55,8 @@ public class ParserCSV {
 				retorno.add(String.valueOf(this.documentoCarregado.getNumeroTotalRegistros()));
 				break;
 			case COUNT_DISTINCT:
-				retorno = this.documentoCarregado.getColuna(opcionais);
+				ArrayList<String> coluna = this.documentoCarregado.getColuna(opcionais);
+				retorno.add(String.valueOf(contarDistintos(coluna)));
 				break;
 			case FILTER:
 				break;
@@ -63,6 +64,13 @@ public class ParserCSV {
 				break;
 		}
 		return retorno;
+	}
+	
+	//TODO: Substituir por streams, metodo atual apenas para testar
+	//a logica
+	private int contarDistintos(ArrayList<String> coluna){
+		int unicos = (int) coluna.stream().distinct().count();
+		return unicos;
 	}
 	
 	//metodo de conveniencia para checar se arquivo ja foi carregado

@@ -1,7 +1,4 @@
 package apresentacao;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -65,25 +62,18 @@ public class Tela {
 					inputValido = propriedade > 0 ? true : false;
 				}while(!inputValido);
 				
-				String opcionais = this.colunasArquivo[propriedade-1];
-				ArrayList<String> unicos = this.parser.executarConsulta(Comando.COUNT_DISTINCT, opcionais);
-				System.out.println("-------------------------------\n");
-				File arquivoSaida = new File("/home/maycon/Desktop/Projetos/arquivoteste.txt");
-			try {
-				FileOutputStream fos = new FileOutputStream(arquivoSaida);
-				for(String s : unicos){
-					String linha = s + "\n";
-					fos.write(linha.getBytes());
-					fos.flush();
-				}
-				fos.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}				
+				String nomePropriedade = this.colunasArquivo[propriedade-1];
+				ArrayList<String> contagemUnicos = this.parser.executarConsulta(Comando.COUNT_DISTINCT, nomePropriedade);
+				System.out.println("-------------------------------\n");		
+				System.out.println("Número de registros únicos para a propriedade " 
+						+ nomePropriedade + ": " + contagemUnicos.get(0));				
 				break;
 				
 			case "3":
+				break;
+				
+			default:
+				System.out.println("Opção desconhecida.");
 				break;
 		}
 	}
