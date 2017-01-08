@@ -28,8 +28,9 @@ public class ParserCSV {
 	
 	private DocumentoCSV carregarArquivo(){
 		DocumentoCSV retorno = new DocumentoCSV();
-		String primeiraLinha = this.leitor.nextLine();
-		String[] colunas = primeiraLinha.split(",");
+		String cabecalho = this.leitor.nextLine();
+		retorno.setCabecalho(cabecalho);
+		String[] colunas = cabecalho.split(",");
 		
 		for(String s : colunas){
 			retorno.addColuna(s);
@@ -48,17 +49,18 @@ public class ParserCSV {
 		return retorno;
 	}
 	
-	public ArrayList<String> executarConsulta(Comando comando, String opcionais){
+	public ArrayList<String> executarConsulta(Comando comando, String[] opcionais){
 		ArrayList<String> retorno = new ArrayList<>();
 		switch(comando){
 			case COUNT_ALL:
 				retorno.add(String.valueOf(this.documentoCarregado.getNumeroTotalRegistros()));
 				break;
 			case COUNT_DISTINCT:
-				ArrayList<String> coluna = this.documentoCarregado.getColuna(opcionais);
+				ArrayList<String> coluna = this.documentoCarregado.getColuna(opcionais[0]);
 				retorno.add(String.valueOf(contarDistintos(coluna)));
 				break;
 			case FILTER:
+				retorno = filtrar(opcionais[0],opcionais[1]);
 				break;
 			default:
 				break;
@@ -66,11 +68,26 @@ public class ParserCSV {
 		return retorno;
 	}
 	
-	//TODO: Substituir por streams, metodo atual apenas para testar
-	//a logica
 	private int contarDistintos(ArrayList<String> coluna){
 		int unicos = (int) coluna.stream().distinct().count();
 		return unicos;
+	}
+	
+	private ArrayList<String> filtrar(String propriedade, String valor){
+		ArrayList<String> retorno = new ArrayList<>();
+		retorno.add(this.documentoCarregado.getCabecalho());
+		Object[] filtrados = this.documentoCarregado.getColuna(propriedade).stream()
+				.filter(s -> s.equals(valor)).toArray();
+//		String[] valores = new String[filtrados.length];
+//		
+//		for(int i = 0; i<filtrados.length; i++){
+//			valores[i] = (String) filtrados[i];
+//		}
+		
+		for(int j = 0; j<filtrados.length; j++){
+			retorno.add(documentoCarregado.getLinhas().get(j));
+		}
+		return retorno;
 	}
 	
 	//metodo de conveniencia para checar se arquivo ja foi carregado

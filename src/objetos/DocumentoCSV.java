@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 public class DocumentoCSV {
+	private String cabecalho; 
 	private LinkedHashMap<String,ArrayList<String>> colunas;
 	private ArrayList<String> linhas;
 	
@@ -53,5 +54,17 @@ public class DocumentoCSV {
 		String[] retorno = new String[this.colunas.size()];
 		retorno = this.colunas.keySet().toArray(retorno);
 		return retorno;
+	}
+	
+	public ArrayList<String> getLinhas(){
+		return linhas;
+	}
+	
+	public void setCabecalho(String cabecalho){
+		this.cabecalho = cabecalho;
+	}
+	
+	public String getCabecalho(){
+		return cabecalho;
 	}
 }

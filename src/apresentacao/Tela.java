@@ -41,40 +41,61 @@ public class Tela {
 				break;
 				
 			case "2":				
-				boolean inputValido = false;
-				int propriedade = 0;
-				do{
-					System.out.println("Selecione a propriedade cujos valores devem ser únicos (digite \"a\" para abortar):");
-					exibeOpcoesPropriedades();
-					String input = console.nextLine();
-					try{
-						propriedade = Integer.parseInt(input);
-						if(propriedade > this.colunasArquivo.length){
-							System.out.println("\nOpção desconhecida. "
-									+ "Favor fornecer uma opção válida.\n");
-							System.out.println("---------------------------\n");
-							continue;
-						}
-					}catch(NumberFormatException e){
-						System.out.println("Favor fornecer apenas entradas numéricas.\n");
-						System.out.println("-----------------------\n");
-					}
-					inputValido = propriedade > 0 ? true : false;
-				}while(!inputValido);
-				
-				String nomePropriedade = this.colunasArquivo[propriedade-1];
+				String[] nomePropriedade = {escolherPropriedade(Comando.COUNT_DISTINCT)};				
 				ArrayList<String> contagemUnicos = this.parser.executarConsulta(Comando.COUNT_DISTINCT, nomePropriedade);
 				System.out.println("-------------------------------\n");		
 				System.out.println("Número de registros únicos para a propriedade " 
 						+ nomePropriedade + ": " + contagemUnicos.get(0));				
 				break;
 				
-			case "3":
+			case "3":				
+				String nomePropriedadex = escolherPropriedade(Comando.FILTER);
+				System.out.println("\n----------------------\n");
+				System.out.println("Selecione um valor para a propriedade a ser filtrada:\n");
+				System.out.print("\n>>>");
+				String valor = console.nextLine();
+				String[] argumentosFiltro = {nomePropriedadex,valor};
+				ArrayList<String> filtrados = this.parser.executarConsulta(Comando.FILTER, argumentosFiltro);
+				
+				for(String linha : filtrados){
+					System.out.println(linha);
+				}
+				
 				break;
 				
 			default:
 				System.out.println("Opção desconhecida.");
 				break;
 		}
+	}
+	
+	private String escolherPropriedade(Comando comando){
+		boolean inputValido = false;
+		int propriedade = 0;
+		do{
+			System.out.println(
+					(comando.equals(Comando.COUNT_DISTINCT) ? 
+							"Selecione a propriedade cujos valores devem ser únicos "
+							: "Selecione a propriedade a ser filtrada" + 
+								"(digite \"a\" para abortar):"));
+			exibeOpcoesPropriedades();
+			String input = console.nextLine();
+			try{
+				propriedade = Integer.parseInt(input);
+				if(propriedade > this.colunasArquivo.length){
+					System.out.println("\nOpção desconhecida. "
+							+ "Favor fornecer uma opção válida.\n");
+					System.out.println("---------------------------\n");
+					continue;
+				}
+			}catch(NumberFormatException e){
+				System.out.println("Favor fornecer apenas entradas numéricas.\n");
+				System.out.println("-----------------------\n");
+			}
+			inputValido = propriedade > 0 ? true : false;
+		}while(!inputValido);
+		
+		String nomePropriedade = this.colunasArquivo[propriedade-1];
+		return nomePropriedade;
 	}
 }
