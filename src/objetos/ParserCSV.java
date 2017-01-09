@@ -2,7 +2,10 @@ package objetos;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 import enums.Comando;
@@ -76,17 +79,37 @@ public class ParserCSV {
 	private ArrayList<String> filtrar(String propriedade, String valor){
 		ArrayList<String> retorno = new ArrayList<>();
 		retorno.add(this.documentoCarregado.getCabecalho());
-		Object[] filtrados = this.documentoCarregado.getColuna(propriedade).stream()
-				.filter(s -> s.equals(valor)).toArray();
-//		String[] valores = new String[filtrados.length];
-//		
-//		for(int i = 0; i<filtrados.length; i++){
-//			valores[i] = (String) filtrados[i];
-//		}
+		Object[] filtrados = this.documentoCarregado.getLinhas().stream()
+				.filter(s -> s.contains(valor)).toArray();
+		String[] valores = new String[filtrados.length];
 		
-		for(int j = 0; j<filtrados.length; j++){
-			retorno.add(documentoCarregado.getLinhas().get(j));
+		File arqTeste = new File("/home/maycon/Desktop/Projetos/arquivoteste.txt");
+		FileOutputStream fos = null;
+		try{
+			fos = new FileOutputStream(arqTeste);
+		}catch(FileNotFoundException e){
+			//
 		}
+		
+		for(int i = 0; i<filtrados.length; i++){
+			String linha = (String) filtrados[i];
+			valores[i] = linha;
+			try {
+				fos.write((linha + "\n").getBytes());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		try {
+			fos.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		retorno = new ArrayList<String>(Arrays.asList(valores));
+		
 		return retorno;
 	}
 	
