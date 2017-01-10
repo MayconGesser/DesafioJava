@@ -1,5 +1,4 @@
 package apresentacao;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -11,12 +10,13 @@ public class Tela {
 	private ParserCSV parser;
 	private String[] colunasArquivo;
 	
-	public Tela(){
+	public Tela(ParserCSV parser){
 		this.console = new Scanner(System.in);
+		this.parser = parser;
+		this.colunasArquivo = parser.getNomesColunasArquivo();
 	}
 	
 	public void iniciar(){
-		criarParser();
 		exibirOpcoesComandos();
 		determinarInput();
 	}
@@ -29,22 +29,6 @@ public class Tela {
 		System.out.println(" 3 - filter [propriedade] [valor].");
 		System.out.println(" 4 - Sair do programa.");
 		System.out.print("\n>>>");
-	}
-	
-	private void criarParser(){
-		boolean caminhoEhValido = false;
-		do{
-			System.out.println("Forneça o caminho para o arquivo csv a ser carregado:");
-			System.out.print("\n>>>");
-			String caminhoArquivo = console.nextLine();
-			try{
-				this.parser = new ParserCSV(caminhoArquivo);
-				this.colunasArquivo = parser.getNomesColunasArquivo();
-				caminhoEhValido = true;
-			}catch(FileNotFoundException e){
-				System.out.println("\nArquivo não encontrado. Por favor, forneça um caminho válido.\n");
-			}
-		}while(!caminhoEhValido);		
 	}
 	
 	private void exibeOpcoesPropriedades(){
@@ -68,7 +52,7 @@ public class Tela {
 					ArrayList<String> contagemUnicos = this.parser.executarConsulta(Comando.COUNT_DISTINCT, nomePropriedade);
 					System.out.println("-------------------------------\n");		
 					System.out.println("Número de registros únicos para a propriedade " 
-							+ nomePropriedade + ": " + contagemUnicos.get(0));				
+							+ nomePropriedade[0] + ": " + contagemUnicos.get(0));				
 					break;
 					
 				case "3":				

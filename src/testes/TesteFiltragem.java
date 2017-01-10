@@ -40,12 +40,16 @@ public class TesteFiltragem {
 		argsFiltragens.add(filtragem_4);
 		
 		for(int i = 0; i<argsFiltragens.size()-1; i++){
-			assertEquals((int)resultadosCertos.get(argsFiltragens.get(i)), 
-						(int)testeFiltrar(argsFiltragens.get(i))
-					);
+			int resultadoEsperado = resultadosCertos.get(argsFiltragens.get(i));
+			//-1 novamente desconta o cabecalho previamente incluido
+			int resultadoFuncaoFiltrar = testeFiltrar(argsFiltragens.get(i))-1;
+			assertEquals(resultadoEsperado,resultadoFuncaoFiltrar);
 		}
 		
-		assertEquals(1,(int)testeFiltrar(argsFiltragens.get(3)));
+		//testa se a funcao nao apresenta comportamento inesperado 
+		//quando o valor a ser filtrado eh unico
+		int resultadoFuncaoFiltrarPorId = (int)testeFiltrar(argsFiltragens.get(3))-1;
+		assertEquals(1,resultadoFuncaoFiltrarPorId);
 	}
 	
 	public int testeFiltrar(String[] args){

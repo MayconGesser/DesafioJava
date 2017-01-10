@@ -17,11 +17,12 @@ public class TesteContagemPropriedadeUnica {
 	
 	final int numeroLinhasTotal = 5564;
 	HashMap<String,Integer> resultadosCertos = new HashMap<>();
-	String[] nomesColunas = parser.getNomesColunasArquivo();
+	String[] nomesColunas = null;
 	@Test
 	public void test() {
 		try{
 			parser = new ParserCSV(caminho);
+			nomesColunas = parser.getNomesColunasArquivo();
 		}catch(FileNotFoundException e){
 			fail("Arquivo não encontrado");
 		}

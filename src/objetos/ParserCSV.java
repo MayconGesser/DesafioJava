@@ -76,8 +76,11 @@ public class ParserCSV {
 			}
 		}
 		for(int j = 0; j<indices.size(); j++){
-			retorno.add(this.documentoCarregado.getLinhas().get(
-					indices.get(j)));
+			//+2 leva em conta tanto a numeracao da ArrayList, q comeca
+			//em 0, quanto o cabecalho
+			String linhaRetorno = "Linha " + (indices.get(j) + 2) + ": "
+					+ this.documentoCarregado.getLinhas().get(indices.get(j));
+			retorno.add(linhaRetorno);
 		}
 		return retorno;
 	}
