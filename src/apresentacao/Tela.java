@@ -1,4 +1,5 @@
 package apresentacao;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -10,19 +11,35 @@ public class Tela {
 	private ParserCSV parser;
 	private final String[] colunasArquivo;
 	
-	public Tela(ParserCSV parser){
+	public Tela(){
 		this.console = new Scanner(System.in);
-		this.parser = parser;
 		this.colunasArquivo = this.parser.getNomesColunasArquivo();
 	}
 	
 	public void iniciar(){
-		System.out.println("Comandos disponíveis:");
+		criarParser();
+		System.out.println("\n-----------------------\n");
+		System.out.println("\nComandos disponíveis:");
 		System.out.println(" 1 - count *");
 		System.out.println(" 2 - count distinct [propriedade]");
 		System.out.println(" 3 - filter [propriedade] [valor]");
 		System.out.print("\n>>>");
 		determinarInput();
+	}
+	
+	private void criarParser(){
+		boolean caminhoEhValido = false;
+		do{
+			System.out.println("Forneça o caminho para o arquivo csv a ser carregado:");
+			System.out.print("\n>>>");
+			String caminhoArquivo = console.nextLine();
+			try{
+				this.parser = new ParserCSV(caminhoArquivo);
+				caminhoEhValido = true;
+			}catch(FileNotFoundException e){
+				System.out.println("\nArquivo não encontrado. Por favor, forneça um caminho válido.\n");
+			}
+		}while(!caminhoEhValido);		
 	}
 	
 	private void exibeOpcoesPropriedades(){

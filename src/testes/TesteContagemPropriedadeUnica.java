@@ -2,6 +2,7 @@ package testes;
 
 import static org.junit.Assert.*;
 
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 
 import org.junit.Test;
@@ -12,13 +13,18 @@ import objetos.ParserCSV;
 public class TesteContagemPropriedadeUnica {
 		
 	final String caminho = "/home/maycon/Desktop/Projetos/selecaoinvolves/cidades.csv";
-	final ParserCSV parser = new ParserCSV(caminho);
+	ParserCSV parser = null;
+	
 	final int numeroLinhasTotal = 5564;
 	HashMap<String,Integer> resultadosCertos = new HashMap<>();
 	String[] nomesColunas = parser.getNomesColunasArquivo();
 	@Test
 	public void test() {
-				
+		try{
+			parser = new ParserCSV(caminho);
+		}catch(FileNotFoundException e){
+			fail("Arquivo não encontrado");
+		}
 		resultadosCertos.put(nomesColunas[0], numeroLinhasTotal);			//ibge_id
 		resultadosCertos.put(nomesColunas[1], 27);							//uf
 		resultadosCertos.put(nomesColunas[2], 5290);						//name

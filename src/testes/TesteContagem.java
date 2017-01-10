@@ -36,7 +36,13 @@ public class TesteContagem {
 	}
 	
 	public int testarContagem(){
-		ParserCSV parser = new ParserCSV(caminho);
+		ParserCSV parser = null;
+		try{
+			parser = new ParserCSV(caminho);
+		}catch(FileNotFoundException e){
+			fail("Arquivo não encontrado");
+		}
+		
 		return parser.getNumeroTotalLinhas();
 	}
 }

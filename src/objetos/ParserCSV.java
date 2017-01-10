@@ -16,17 +16,11 @@ public class ParserCSV {
 	private DocumentoCSV documentoCarregado;
 	private boolean prontoParaLer;
 	
-	public ParserCSV(String caminhoArquivo){
+	public ParserCSV(String caminhoArquivo) throws FileNotFoundException{
 		File streamArquivo = new File(caminhoArquivo);
-		try {	//TODO: Tirar esse try-catch; objeto pode acabar "meio criado"
-			this.leitor = new Scanner(streamArquivo);
-			this.documentoCarregado = this.carregarArquivo();
-			this.prontoParaLer = true;
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			this.prontoParaLer = false;
-		}
+		this.leitor = new Scanner(streamArquivo);
+		this.documentoCarregado = this.carregarArquivo();
+		this.prontoParaLer = true;
 	}
 	
 	private DocumentoCSV carregarArquivo(){
