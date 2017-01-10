@@ -125,4 +125,8 @@ public class ParserCSV {
 	public int getNumeroTotalColunas(){
 		return this.documentoCarregado.getNumeroTotalColunas();
 	}
+	
+	public int getNumeroTotalLinhas(){
+		return this.documentoCarregado.getContagemLinhas();
+	}
 }

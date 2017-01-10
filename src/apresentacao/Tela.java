@@ -8,7 +8,7 @@ import objetos.ParserCSV;
 public class Tela {
 	private Scanner console;
 	private ParserCSV parser;
-	private String[] colunasArquivo;
+	private final String[] colunasArquivo;
 	
 	public Tela(ParserCSV parser){
 		this.console = new Scanner(System.in);

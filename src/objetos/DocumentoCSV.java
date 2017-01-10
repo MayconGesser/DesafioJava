@@ -13,8 +13,8 @@ public class DocumentoCSV {
 		this.linhas = new ArrayList<>();
 	}
 	
-	public void addColuna(String chave){
-		this.colunas.put(chave, new ArrayList<>());
+	public void addColuna(String nomeColuna){
+		this.colunas.put(nomeColuna, new ArrayList<>());
 	}
 	
 	public void inserirNaColuna(String coluna,String valor){
@@ -58,6 +58,10 @@ public class DocumentoCSV {
 	
 	public ArrayList<String> getLinhas(){
 		return linhas;
+	}
+	
+	public int getContagemLinhas(){
+		return linhas.size();
 	}
 	
 	public void setCabecalho(String cabecalho){
