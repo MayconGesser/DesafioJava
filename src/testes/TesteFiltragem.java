@@ -2,6 +2,7 @@ package testes;
 
 import static org.junit.Assert.*;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -13,7 +14,7 @@ import objetos.ParserCSV;
 public class TesteFiltragem {
 	
 	final String caminho = "/home/maycon/Desktop/Projetos/selecaoinvolves/cidades.csv";
-	final ParserCSV parser = null;
+	ParserCSV parser = null;
 	final int numeroLinhasTotal = 5564;
 	HashMap<String[],Integer> resultadosCertos = new HashMap<>();
 	String[] filtragem_1 = {"uf","RO"};
@@ -24,6 +25,11 @@ public class TesteFiltragem {
 	
 	@Test
 	public void test() {
+		try{
+			parser = new ParserCSV(caminho);
+		}catch(FileNotFoundException e){
+			fail("Arquivo não encontrado");
+		}
 		resultadosCertos.put(filtragem_1, 51);
 		resultadosCertos.put(filtragem_2, 22);
 		resultadosCertos.put(filtragem_3, 62);

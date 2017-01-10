@@ -21,7 +21,7 @@ public class DocumentoCSV {
 		this.colunas.get(coluna).add(valor);
 	}
 	
-	public void inserirLinha(String linha){	//TODO:Melhorar esse metodo
+	public void inserirLinha(String linha){	
 		this.linhas.add(linha);
 	}
 	

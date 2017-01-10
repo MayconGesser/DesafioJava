@@ -2,10 +2,7 @@ package objetos;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 
 import enums.Comando;
@@ -14,13 +11,11 @@ public class ParserCSV {
 	
 	private Scanner leitor;
 	private DocumentoCSV documentoCarregado;
-	private boolean prontoParaLer;
 	
 	public ParserCSV(String caminhoArquivo) throws FileNotFoundException{
 		File streamArquivo = new File(caminhoArquivo);
 		this.leitor = new Scanner(streamArquivo);
 		this.documentoCarregado = this.carregarArquivo();
-		this.prontoParaLer = true;
 	}
 	
 	private DocumentoCSV carregarArquivo(){
@@ -57,7 +52,7 @@ public class ParserCSV {
 				retorno.add(String.valueOf(contarDistintos(coluna)));
 				break;
 			case FILTER:
-				retorno = filtrar(opcionais[0],opcionais[1]);
+				retorno = filtrarPorColuna(opcionais[0],opcionais[1]);
 				break;
 			default:
 				break;
@@ -70,46 +65,21 @@ public class ParserCSV {
 		return unicos;
 	}
 	
-	private ArrayList<String> filtrar(String propriedade, String valor){
+	private ArrayList<String> filtrarPorColuna(String propriedade, String valor){
+		ArrayList<Integer> indices = new ArrayList<>();
 		ArrayList<String> retorno = new ArrayList<>();
 		retorno.add(this.documentoCarregado.getCabecalho());
-		Object[] filtrados = this.documentoCarregado.getLinhas().stream()
-				.filter(s -> s.contains(valor)).toArray();
-		String[] valores = new String[filtrados.length];
-		
-		File arqTeste = new File("/home/maycon/Desktop/Projetos/arquivoteste.txt");
-		FileOutputStream fos = null;
-		try{
-			fos = new FileOutputStream(arqTeste);
-		}catch(FileNotFoundException e){
-			//
-		}
-		
-		for(int i = 0; i<filtrados.length; i++){
-			String linha = (String) filtrados[i];
-			valores[i] = linha;
-			try {
-				fos.write((linha + "\n").getBytes());
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		ArrayList<String> coluna = this.documentoCarregado.getColuna(propriedade);
+		for(int i = 0; i<coluna.size(); i++){
+			if(coluna.get(i).equals(valor)){
+				indices.add(i);
 			}
 		}
-		try {
-			fos.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		for(int j = 0; j<indices.size(); j++){
+			retorno.add(this.documentoCarregado.getLinhas().get(
+					indices.get(j)));
 		}
-		
-		retorno = new ArrayList<String>(Arrays.asList(valores));
-		
 		return retorno;
-	}
-	
-	//metodo de conveniencia para checar se arquivo ja foi carregado
-	public boolean isProntoParaLer(){
-		return this.prontoParaLer;
 	}
 	
 	public String[] getNomesColunasArquivo(){
