@@ -1,4 +1,5 @@
 package apresentacao;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -10,15 +11,48 @@ public class Tela {
 	private ParserCSV parser;
 	private String[] colunasArquivo;
 	
-	public Tela(ParserCSV parser){
-		this.console = new Scanner(System.in);
-		this.parser = parser;
-		this.colunasArquivo = parser.getNomesColunasArquivo();
+	public Tela(){
+		this.console = new Scanner(System.in);		
 	}
 	
 	public void iniciar(){
+		criarParser();
 		exibirOpcoesComandos();
 		determinarInput();
+	}
+	
+	private void criarParser(){
+		boolean caminhoEhValido = false;
+		ParserCSV parser = null;
+		do{
+			System.out.println("Forneça o caminho para o arquivo .csv:");
+			System.out.print("\n>>>");
+			String caminhoArquivo = console.nextLine();
+			try{
+				parser = new ParserCSV(caminhoArquivo);
+				this.colunasArquivo = parser.getNomesColunasArquivo();
+				caminhoEhValido = true;
+			}catch(FileNotFoundException e){
+				System.out.println("\nErro: Arquivo ou diretório não encontrado.");
+				System.out.println("Gostaria de tentar novamente? (S/N)");
+				System.out.print("\n>>>");
+				String opcao = console.nextLine();
+				if(!opcao.equals("S")){
+					System.exit(1);
+				}
+			}
+			catch(IllegalArgumentException ex){
+				System.out.println(ex.getMessage());
+				System.out.println("Gostaria de tentar novamente? (S/N)");
+				System.out.print("\n>>>");
+				String opcao = console.nextLine();
+				if(!opcao.equals("S")){
+					System.exit(1);
+				}
+			}
+		}while(!caminhoEhValido);
+		this.parser = parser;
+		this.colunasArquivo = parser.getNomesColunasArquivo();
 	}
 	
 	private void exibirOpcoesComandos(){

@@ -12,7 +12,10 @@ public class ParserCSV {
 	private Scanner leitor;
 	private DocumentoCSV documentoCarregado;
 	
-	public ParserCSV(String caminhoArquivo) throws FileNotFoundException{
+	public ParserCSV(String caminhoArquivo) throws FileNotFoundException, IllegalArgumentException{
+		if(!caminhoArquivo.substring(caminhoArquivo.length()-4).equals(".csv")){
+			throw new IllegalArgumentException("Erro: o arquivo fornecido não é do formato .csv");	
+		}
 		File streamArquivo = new File(caminhoArquivo);
 		this.leitor = new Scanner(streamArquivo);
 		this.documentoCarregado = this.carregarArquivo();
