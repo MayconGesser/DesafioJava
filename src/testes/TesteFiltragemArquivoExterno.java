@@ -11,16 +11,15 @@ import org.junit.Test;
 import enums.Comando;
 import objetos.ParserCSV;
 
-public class TesteFiltragem {
-	
-	final String caminho = "cidades.csv";
+public class TesteFiltragemArquivoExterno {
+
+	final String caminho = "SalesJan2009.csv";
 	ParserCSV parser = null;
-	final int numeroLinhasTotal = 5564;
 	HashMap<String[],Integer> resultadosCertos = new HashMap<>();
-	String[] filtragem_1 = {"uf","RO"};
-	String[] filtragem_2 = {"uf","AC"};
-	String[] filtragem_3 = {"uf","AM"};
-	String[] filtragem_4 = {"ibge_id","1300300"};
+	String[] filtragem_1 = {"Country","Brazil"};
+	String[] filtragem_2 = {"Country","Germany"};
+	String[] filtragem_3 = {"State","IL"};
+	String[] filtragem_4 = {"Product","Product3"};
 	ArrayList<String[]> argsFiltragens = new ArrayList<>();
 	
 	@Test
@@ -30,9 +29,10 @@ public class TesteFiltragem {
 		}catch(FileNotFoundException e){
 			fail("Arquivo não encontrado");
 		}
-		resultadosCertos.put(filtragem_1, 51);
-		resultadosCertos.put(filtragem_2, 22);
-		resultadosCertos.put(filtragem_3, 62);
+		resultadosCertos.put(filtragem_1, 5);
+		resultadosCertos.put(filtragem_2, 25);
+		resultadosCertos.put(filtragem_3, 16);
+		resultadosCertos.put(filtragem_4, 16);
 		
 		argsFiltragens.add(filtragem_1);
 		argsFiltragens.add(filtragem_2);
@@ -44,12 +44,7 @@ public class TesteFiltragem {
 			//-1 novamente desconta o cabecalho previamente incluido
 			int resultadoFuncaoFiltrar = testeFiltrar(argsFiltragens.get(i))-1;
 			assertEquals(resultadoEsperado,resultadoFuncaoFiltrar);
-		}
-		
-		//testa se a funcao nao apresenta comportamento inesperado 
-		//quando o valor a ser filtrado eh unico
-		int resultadoFuncaoFiltrarPorId = (int)testeFiltrar(argsFiltragens.get(3))-1;
-		assertEquals(1,resultadoFuncaoFiltrarPorId);
+		}		
 	}
 	
 	public int testeFiltrar(String[] args){
@@ -58,4 +53,5 @@ public class TesteFiltragem {
 			).size();
 		return retorno;
 	}
+	
 }

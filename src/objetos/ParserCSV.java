@@ -13,6 +13,7 @@ public class ParserCSV {
 	private DocumentoCSV documentoCarregado;
 	
 	public ParserCSV(String caminhoArquivo) throws FileNotFoundException, IllegalArgumentException{
+		//checagem para determinar se arquivo fornecido eh do tipo correto
 		if(!caminhoArquivo.substring(caminhoArquivo.length()-4).equals(".csv")){
 			throw new IllegalArgumentException("Erro: o arquivo fornecido não é do formato .csv");	
 		}
@@ -25,12 +26,10 @@ public class ParserCSV {
 		DocumentoCSV retorno = new DocumentoCSV();
 		String cabecalho = this.leitor.nextLine();
 		retorno.setCabecalho(cabecalho);
-		String[] colunas = cabecalho.split(",");
-		
+		String[] colunas = cabecalho.split(",");		
 		for(String s : colunas){
 			retorno.addColuna(s);
-		}
-			
+		}			
 		while(this.leitor.hasNextLine()){
 			String linha = this.leitor.nextLine();
 			String[] valores = linha.split(",");

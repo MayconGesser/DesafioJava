@@ -78,7 +78,7 @@ public class Tela {
 			switch(opcao){
 				case "1":
 					String registros = this.parser.executarConsulta(Comando.COUNT_ALL, null).get(0);
-					System.out.println(registros);
+					System.out.println("Total de registros no documento: " + registros);
 					break;
 					
 				case "2":				

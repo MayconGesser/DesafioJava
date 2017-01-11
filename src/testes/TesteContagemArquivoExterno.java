@@ -4,14 +4,15 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 import org.junit.Test;
-import java.util.Scanner;
+
 import objetos.ParserCSV;
 
-public class TesteContagem {
+public class TesteContagemArquivoExterno {
 
-	final String caminho = "cidades.csv";
+	final String caminho = "SalesJan2009.csv";
 	
 	@Test
 	public void test() {
@@ -23,6 +24,7 @@ public class TesteContagem {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		int contagemLinhasScanner = 0;
 		while(sc.hasNextLine()){
 			contagemLinhasScanner++;
@@ -31,7 +33,7 @@ public class TesteContagem {
 		sc.close();
 		int contagemLinhasParser = testarContagem();
 		//-1 desconta o cabecalho
-		assertEquals(5564,contagemLinhasScanner-1);
+		assertEquals(997,contagemLinhasScanner-1);
 		assertEquals(contagemLinhasScanner-1, contagemLinhasParser);
 	}
 	

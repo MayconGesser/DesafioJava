@@ -10,12 +10,10 @@ import org.junit.Test;
 import enums.Comando;
 import objetos.ParserCSV;
 
-public class TesteContagemPropriedadeUnica {
-		
-	final String caminho = "cidades.csv";
+public class TesteContagemPropriedadeUnicaArquivoExterno {
+	final String caminho = "SalesJan2009.csv";
 	ParserCSV parser = null;
 	
-	final int numeroLinhasTotal = 5564;
 	HashMap<String,Integer> resultadosCertos = new HashMap<>();
 	String[] nomesColunas = null;
 	@Test
@@ -26,14 +24,19 @@ public class TesteContagemPropriedadeUnica {
 		}catch(FileNotFoundException e){
 			fail("Arquivo não encontrado");
 		}
-		resultadosCertos.put(nomesColunas[0], numeroLinhasTotal);			//ibge_id
-		resultadosCertos.put(nomesColunas[1], 27);							//uf
-		resultadosCertos.put(nomesColunas[2], 5290);						//name
-		resultadosCertos.put(nomesColunas[3], numeroLinhasTotal);			//lat
-		resultadosCertos.put(nomesColunas[4], numeroLinhasTotal);			//lon
-		resultadosCertos.put(nomesColunas[5], 5282);						//no_accents
-		resultadosCertos.put(nomesColunas[6], 554);							//microregion
-		resultadosCertos.put(nomesColunas[7], 137);							//mesoregion
+
+		resultadosCertos.put(nomesColunas[0],986);		//Transaction_date
+		resultadosCertos.put(nomesColunas[1], 4);		//Product
+		resultadosCertos.put(nomesColunas[2], 9);		//Price
+		resultadosCertos.put(nomesColunas[3], 4);		//Payment_Type
+		resultadosCertos.put(nomesColunas[4], 764);		//Name
+		resultadosCertos.put(nomesColunas[5], 759);		//City
+		resultadosCertos.put(nomesColunas[6], 205);		//State
+		resultadosCertos.put(nomesColunas[7], 56);		//Country
+		resultadosCertos.put(nomesColunas[8], 975);		//Account_Created
+		resultadosCertos.put(nomesColunas[9], 976);		//Last_Login
+		resultadosCertos.put(nomesColunas[10], 706);	//Latitude
+		resultadosCertos.put(nomesColunas[11], 723);	//Longitude
 		
 		for(int i = 0; i<nomesColunas.length; i++){
 			int certo = resultadosCertos.get(nomesColunas[i]);
