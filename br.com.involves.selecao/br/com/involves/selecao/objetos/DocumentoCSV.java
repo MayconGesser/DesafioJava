@@ -5,6 +5,10 @@ import java.util.LinkedHashMap;
 
 public class DocumentoCSV {
 	private String cabecalho; 
+	
+	//Eh necessario usar um LinkedHashMap pois a ordem em q as
+	//colunas foram inseridas precisa ser mantida para um bom
+	//funcionamento da aplicacao
 	private LinkedHashMap<String,ArrayList<String>> colunas;
 	private ArrayList<String> linhas;
 	
@@ -27,20 +31,7 @@ public class DocumentoCSV {
 	
 	public ArrayList<String> getColuna(String coluna) {
 		return colunas.get(coluna);
-	}
-	
-	public void imprimirColuna(String coluna){
-		ArrayList<String> valores = this.colunas.get(coluna);
-		for(String s : valores){
-			System.out.println(s);
-		}
-	}
-	
-	public void imprimirCSVCompleto(){
-		for(String linha : this.linhas){
-			System.out.println(linha);
-		}
-	}
+	}	
 	
 	public int getNumeroTotalRegistros(){
 		return this.linhas.size();
@@ -57,13 +48,9 @@ public class DocumentoCSV {
 	}
 	
 	public ArrayList<String> getLinhas(){
-		return linhas;
+		return this.linhas;
 	}
-	
-	public int getContagemLinhas(){
-		return linhas.size();
-	}
-	
+		
 	public void setCabecalho(String cabecalho){
 		this.cabecalho = cabecalho;
 	}

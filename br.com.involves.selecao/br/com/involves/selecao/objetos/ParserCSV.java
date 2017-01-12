@@ -39,14 +39,19 @@ public class ParserCSV {
 		retorno.setCabecalho(cabecalho);
 		String[] colunas = cabecalho.split(",");		
 		
-		//Cada virgula 
+		//cada valor no cabecalho q foi separado pelas virgulas
+		//eh adicionado como uma coluna
 		for(String s : colunas){
 			retorno.addColuna(s);
 		}			
+		
 		while(this.leitor.hasNextLine()){
 			String linha = this.leitor.nextLine();
 			String[] valores = linha.split(",");
 			for(int j = 0; j<valores.length; j++){
+				//cada valor em um registro equivale a uma coluna
+				//do cabecalho. Logo, o valor na posicao X de um registro
+				//equivale a coluna/propriedade X do cabecalho
 				retorno.inserirNaColuna(colunas[j], valores[j]);
 			}
 			retorno.inserirLinha(linha);
@@ -55,8 +60,17 @@ public class ParserCSV {
 		this.leitor.close();
 		return retorno;
 	}
-	
+	//Esse metodo retorna uma ArrayList devido ao fato q serve a todos
+	//os 3 tipos de comandos; entao eh necessario q possa retornar 
+	//consistentemente todos os 3, pois nao se sabe qual sera invocado. 
+	//Poderia ter feito uma outra versao desse metodo e manter essa versao
+	//como a versao sobrecarregada, mas ambas as versoes teriam o mesmo
+	//nome porem tipos de retornos diferentes
+	//(comandos de COUNT necessitam retornar apenas numeros), o q nao
+	//seria bom para a consistencia do codigo
 	public ArrayList<String> executarConsulta(Comando comando, String[] opcionais){
+		//opcionais[0] : Propriedade
+		//opcionais[1] : Valor da propriedade
 		ArrayList<String> retorno = new ArrayList<>();
 		switch(comando){
 			case COUNT_ALL:
@@ -67,7 +81,7 @@ public class ParserCSV {
 				retorno.add(String.valueOf(contarDistintos(coluna)));
 				break;
 			case FILTER:
-				retorno = filtrarPorColuna(opcionais[0],opcionais[1]);
+				retorno = filtrar(opcionais[0],opcionais[1]);
 				break;
 			default:
 				break;
@@ -75,16 +89,29 @@ public class ParserCSV {
 		return retorno;
 	}
 	
+	public int getNumeroTotalLinhas(){
+		return this.documentoCarregado.getNumeroTotalRegistros();
+	}
+	
 	private int contarDistintos(ArrayList<String> coluna){
 		int unicos = (int) coluna.stream().distinct().count();
 		return unicos;
 	}
 	
-	private ArrayList<String> filtrarPorColuna(String propriedade, String valor){
+	private ArrayList<String> filtrar(String propriedade, String valor){
 		ArrayList<Integer> indices = new ArrayList<>();
 		ArrayList<String> retorno = new ArrayList<>();
 		retorno.add(this.documentoCarregado.getCabecalho());
 		ArrayList<String> coluna = this.documentoCarregado.getColuna(propriedade);
+		
+		//A intencao desse codigo eh iterar pelos valores da coluna
+		//especificada e verificar quais desses valores sao iguais
+		//ao valor procurado. A posicao da linha eh gravada na ArrayList
+		//indices para q seja iterada e suas entradas sirvam para
+		//acessar a ArrayList linhas nas posicoes onde os valores ocorrem
+		//zelando assim pela estabilidade do comportamento da aplicacao,
+		//q procurara por valores apenas na coluna especificada, e nao 
+		//na linha inteira
 		for(int i = 0; i<coluna.size(); i++){
 			if(coluna.get(i).equals(valor)){
 				indices.add(i);
@@ -106,9 +133,5 @@ public class ParserCSV {
 	
 	public int getNumeroTotalColunas(){
 		return this.documentoCarregado.getNumeroTotalColunas();
-	}
-	
-	public int getNumeroTotalLinhas(){
-		return this.documentoCarregado.getContagemLinhas();
-	}
+	}	
 }

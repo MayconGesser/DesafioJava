@@ -133,7 +133,7 @@ public class Tela {
 			System.out.println(
 					((comando.equals(Comando.COUNT_DISTINCT) ? 
 							"Selecione a propriedade cujos valores devem ser únicos "
-							: "Selecione a propriedade a ser filtrada") + 
+							: "Selecione a propriedade a ser filtrada ") + 
 								"(digite \"a\" para abortar):"));
 			exibeOpcoesPropriedades();
 			String input = console.nextLine();
@@ -142,7 +142,8 @@ public class Tela {
 			}
 			try{
 				propriedade = Integer.parseInt(input);
-				if(propriedade > this.parser.getNumeroTotalColunas()){
+				if(propriedade > this.parser.getNumeroTotalColunas()
+						|| propriedade <= 0){
 					System.out.println("\nOpção desconhecida. "
 							+ "Favor fornecer uma opção válida.\n");
 					System.out.println("---------------------------\n");
@@ -166,7 +167,7 @@ public class Tela {
 		//trata-se apenas o caso do input q confirma a intencao de 
 		//tentar novamente por questoes de estabilidade da aplicacao
 		//eh desnecessario testar qualquer outro input
-		if(!opcao.equals("S")){
+		if(!opcao.toUpperCase().equals("S")){
 			System.exit(1);
 		}
 	}
