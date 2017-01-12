@@ -1,8 +1,12 @@
-#H1 DesafioJava
+# DesafioJava
 Repositório para realização do teste no processo seletivo para a vaga de desenvolvedor Java I para a empresa Involves.
 
 Algumas explicações:
+
+
 1. O arquivo cidades.csv original continha várias inconsistências que foram eliminadas. 
+
+
 2. O arquivo inconsistencias.txt, incluído junto com o projeto, aponta exatamente quais. 
 
 Além do arquivo cidades.csv, que foi suprido para realizar o projeto, um outro arquivo csv
