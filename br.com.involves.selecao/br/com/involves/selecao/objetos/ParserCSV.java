@@ -14,10 +14,16 @@ public class ParserCSV {
 	
 	public ParserCSV(String caminhoArquivo) throws FileNotFoundException, IllegalArgumentException{
 		//checagem para determinar se arquivo fornecido eh do tipo correto
+		//diferente da FileNotFoundException essa exception deve ser lancada
+		//mediante essa verificacao, visto q eh um comportamento desejado e manualmente
+		//programado
 		if(!caminhoArquivo.substring(caminhoArquivo.length()-4).equals(".csv")){
 			throw new IllegalArgumentException("Erro: o arquivo fornecido não é do formato .csv");	
 		}
 		File streamArquivo = new File(caminhoArquivo);
+		
+		//essa linha lanca automaticamente uma FileNotFoundException, q eh
+		//coberta na clausula throws do metodo 
 		this.leitor = new Scanner(streamArquivo);
 		this.documentoCarregado = this.carregarArquivo();
 	}
@@ -25,8 +31,15 @@ public class ParserCSV {
 	private DocumentoCSV carregarArquivo(){
 		DocumentoCSV retorno = new DocumentoCSV();
 		String cabecalho = this.leitor.nextLine();
+		
+		//Aqui ha uma instabilidade: o parser sempre assume q a primeira linha
+		//do arquivo representa seu cabecalho.
+		//Entao todo arquivo q for suprido ao parser deve obedecer ao formato
+		//esperado e ter um cabecalho na primeira linha
 		retorno.setCabecalho(cabecalho);
 		String[] colunas = cabecalho.split(",");		
+		
+		//Cada virgula 
 		for(String s : colunas){
 			retorno.addColuna(s);
 		}			

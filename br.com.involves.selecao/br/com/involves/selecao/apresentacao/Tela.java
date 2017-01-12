@@ -31,22 +31,17 @@ public class Tela {
 				parser = new ParserCSV(caminhoArquivo);
 				caminhoEhValido = true;
 			}catch(FileNotFoundException e){
+				//Aqui eh necessario exibir uma mensagem "custom", para esclarecer
+				//a natureza do erro
 				System.out.println("\nErro: Arquivo ou diretório não encontrado.");
-				System.out.println("Gostaria de tentar novamente? (S/N)");
-				System.out.print("\n>>>");
-				String opcao = console.nextLine();
-				if(!opcao.equals("S")){
-					System.exit(1);
-				}
+				rotinaErroInput();
 			}
 			catch(IllegalArgumentException ex){
+				//Como essa excecao foi lancada com uma mensagem propria
+				//nao eh necessaria uma outra mensagem, basta exibir a mensagem
+				//da propria excecao
 				System.out.println(ex.getMessage());
-				System.out.println("Gostaria de tentar novamente? (S/N)");
-				System.out.print("\n>>>");
-				String opcao = console.nextLine();
-				if(!opcao.equals("S")){
-					System.exit(1);
-				}
+				rotinaErroInput();
 			}
 		}while(!caminhoEhValido);
 		this.parser = parser;
@@ -71,6 +66,12 @@ public class Tela {
 	}
 	
 	private void determinarInput(){
+		//esse metodo avalia o input como String como uma maneira
+		//de ser mais estavel: se algum input desconhecido for 
+		//fornecido o proprio switch case o tratara; se a opcao 
+		//fosse convertida para o formato numerico todo o tratamento 
+		//de excecao para realizar a conversao seria necessario, 
+		//oq ocasionaria um overhead desnecessario
 		while(true){
 			String opcao = this.console.nextLine();
 			switch(opcao){
@@ -79,22 +80,31 @@ public class Tela {
 					System.out.println("Total de registros no documento: " + registros);
 					break;
 					
-				case "2":				
-					String[] nomePropriedade = {escolherPropriedade(Comando.COUNT_DISTINCT)};				
-					ArrayList<String> contagemUnicos = this.parser.executarConsulta(Comando.COUNT_DISTINCT, nomePropriedade);
+				case "2":		
+					String nomePropriedadeContar = escolherPropriedade(Comando.COUNT_DISTINCT);
+					if(nomePropriedadeContar.equals("a")){
+						exibirOpcoesComandos();
+						continue;
+					}
+					String[] argsConsultaContar = {nomePropriedadeContar};				
+					ArrayList<String> contagemUnicos = this.parser.executarConsulta(Comando.COUNT_DISTINCT, argsConsultaContar);
 					System.out.println("-------------------------------\n");		
 					System.out.println("Número de registros únicos para a propriedade " 
-							+ nomePropriedade[0] + ": " + contagemUnicos.get(0));				
+							+ argsConsultaContar[0] + ": " + contagemUnicos.get(0));				
 					break;
 					
 				case "3":				
-					String nomePropriedadex = escolherPropriedade(Comando.FILTER);
+					String nomePropriedadeFiltrar = escolherPropriedade(Comando.FILTER);
+					if(nomePropriedadeFiltrar.equals("a")){
+						exibirOpcoesComandos();
+						continue;
+					}
 					System.out.println("\n----------------------\n");
 					System.out.println("Selecione um valor para a propriedade a ser filtrada:\n");
 					System.out.print("\n>>>");
 					String valor = console.nextLine();
-					String[] argumentosFiltro = {nomePropriedadex,valor};
-					ArrayList<String> filtrados = this.parser.executarConsulta(Comando.FILTER, argumentosFiltro);
+					String[] argsConsultaFiltrar = {nomePropriedadeFiltrar,valor};
+					ArrayList<String> filtrados = this.parser.executarConsulta(Comando.FILTER, argsConsultaFiltrar);
 					
 					for(String linha : filtrados){
 						System.out.println(linha);
@@ -115,15 +125,21 @@ public class Tela {
 	
 	private String escolherPropriedade(Comando comando){
 		boolean inputValido = false;
+		//aqui a conversao do input para o formato numerico
+		//se faz necessaria, jah q a numeracao do input eh utilizada
+		//para acessar o array q contem as colunas/propriedades do arquivo
 		int propriedade = 0;
 		do{
 			System.out.println(
-					(comando.equals(Comando.COUNT_DISTINCT) ? 
+					((comando.equals(Comando.COUNT_DISTINCT) ? 
 							"Selecione a propriedade cujos valores devem ser únicos "
-							: "Selecione a propriedade a ser filtrada" + 
+							: "Selecione a propriedade a ser filtrada") + 
 								"(digite \"a\" para abortar):"));
 			exibeOpcoesPropriedades();
 			String input = console.nextLine();
+			if(input.equals("a")){
+				return input;
+			}
 			try{
 				propriedade = Integer.parseInt(input);
 				if(propriedade > this.parser.getNumeroTotalColunas()){
@@ -141,5 +157,17 @@ public class Tela {
 		
 		String nomePropriedade = this.parser.getNomesColunasArquivo()[propriedade-1];
 		return nomePropriedade;
+	}
+	
+	private void rotinaErroInput(){
+		System.out.println("Gostaria de tentar novamente? (S/N)");
+		System.out.print("\n>>>");
+		String opcao = console.nextLine();
+		//trata-se apenas o caso do input q confirma a intencao de 
+		//tentar novamente por questoes de estabilidade da aplicacao
+		//eh desnecessario testar qualquer outro input
+		if(!opcao.equals("S")){
+			System.exit(1);
+		}
 	}
 }
