@@ -11,5 +11,5 @@ e que não havia eventuais falhas provenientes de um desenvolvimento efetuado ap
 arquivo suprido em vista. 
 
 Instruções de uso:
-Após clonar o repositório, basta ir à pasta e fazer:
+Após clonar o repositório, basta ir à pasta e fazer:\n
 java -jar LeitorCSV
