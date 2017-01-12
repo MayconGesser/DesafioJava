@@ -15,6 +15,7 @@ Algumas explicações:
   arquivo suprido em vista. 
 
 Instruções de uso:
+
 Após clonar o repositório, basta ir à pasta e fazer:
 
 
