@@ -9,8 +9,7 @@ import br.com.involves.selecao.objetos.enums.Comando;
 public class Tela {
 	private Scanner console;
 	private ParserCSV parser;
-	private String[] colunasArquivo;
-	
+		
 	public Tela(){
 		this.console = new Scanner(System.in);		
 	}
@@ -30,7 +29,6 @@ public class Tela {
 			String caminhoArquivo = console.nextLine();
 			try{
 				parser = new ParserCSV(caminhoArquivo);
-				this.colunasArquivo = parser.getNomesColunasArquivo();
 				caminhoEhValido = true;
 			}catch(FileNotFoundException e){
 				System.out.println("\nErro: Arquivo ou diretório não encontrado.");
@@ -52,7 +50,6 @@ public class Tela {
 			}
 		}while(!caminhoEhValido);
 		this.parser = parser;
-		this.colunasArquivo = parser.getNomesColunasArquivo();
 	}
 	
 	private void exibirOpcoesComandos(){
@@ -66,8 +63,9 @@ public class Tela {
 	}
 	
 	private void exibeOpcoesPropriedades(){
-		for(int i = 0; i<this.colunasArquivo.length; i++){
-			System.out.println(" " + (i+1) + " - " + this.colunasArquivo[i] + "\n");
+		String[] colunasArquivo = this.parser.getNomesColunasArquivo();
+		for(int i = 0; i<colunasArquivo.length; i++){
+			System.out.println(" " + (i+1) + " - " + colunasArquivo[i] + "\n");
 		}
 		System.out.print("\n>>>");
 	}
@@ -128,7 +126,7 @@ public class Tela {
 			String input = console.nextLine();
 			try{
 				propriedade = Integer.parseInt(input);
-				if(propriedade > this.colunasArquivo.length){
+				if(propriedade > this.parser.getNumeroTotalColunas()){
 					System.out.println("\nOpção desconhecida. "
 							+ "Favor fornecer uma opção válida.\n");
 					System.out.println("---------------------------\n");
@@ -141,7 +139,7 @@ public class Tela {
 			inputValido = propriedade > 0 ? true : false;
 		}while(!inputValido);
 		
-		String nomePropriedade = this.colunasArquivo[propriedade-1];
+		String nomePropriedade = this.parser.getNomesColunasArquivo()[propriedade-1];
 		return nomePropriedade;
 	}
 }
